@@ -3,7 +3,14 @@ package circle
 import "math"
 
 func CalculateCircle(r int) (area float32, circumference float32) {
-	var pi float32 = math.Phi
+	var pi float32
+
+	if r%7 == 0 {
+		pi = math.Phi
+	} else {
+		pi = math.Pi
+	}
+	
 	area = calculateCircleArea(r, pi)
 	circumference = calculateCircleCircumference(r, pi)
 
