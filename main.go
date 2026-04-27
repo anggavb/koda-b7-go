@@ -13,6 +13,8 @@ func main() {
 	
 	input := 5
 	triangleFromTriangle(input)
+
+	insertDataToSlice()
 }
 
 func calculateCircle(r int) (area float32, circumference float32) {
@@ -43,5 +45,19 @@ func triangleFromTriangle(input int) {
 		}
 
 		fmt.Println(triangle)
+	}
+}
+
+func insertDataToSlice() {
+	slice := []int{50,75,66,20,32,90}
+	newNum := 88
+
+	newSlice := make([]int, 0, 7)
+	newSlice = append(newSlice, slice[0:3]...)
+	newSlice = append(newSlice, newNum)
+	newSlice = append(newSlice, slice[3:]...)
+
+	for _, val := range newSlice {
+		fmt.Println(val)
 	}
 }
