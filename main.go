@@ -5,16 +5,50 @@ import (
 	"math"
 )
 
+type Education struct {
+	name string
+	major string
+}
+
+type Biodata struct {
+	name string
+	photo string
+	email string
+	age uint
+	telp string
+	isMarriage bool
+	education []Education
+}
+
 func main() {
+	// Minitask 1
 	radius := 12
     area, circumference := calculateCircle(radius)
-
+	
 	fmt.Printf("Jari-jari: %d\nLuas: %.2f\nKeliling: %.2f\n", radius, area, circumference)
 	
+	// Minitask 2
 	input := 5
 	triangleFromTriangle(input)
 
+	// Minitask 3
 	insertDataToSlice()
+
+	// Minitask 4
+	angga := Biodata{
+		name: "Angga Vb",
+		photo: "image.png",
+		email: "anggavb8@gmail.com",
+		age: 28,
+		telp: "0851 5677 0131",
+		isMarriage: true,
+		education: []Education{
+			{name: "SMK AL-BAHRI BEKASI", major: "Rekayasa Perangkat Lunak"},
+			{name: "Politeknik LP3I Cileungsi", major: "Information Management"},
+		},
+	}
+
+	fmt.Println(angga)
 }
 
 func calculateCircle(r int) (area float32, circumference float32) {
