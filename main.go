@@ -34,8 +34,10 @@ func calculateCircleCircumference(r int, pi float32) (circumference float32) {
 }
 
 func triangleFromTriangle(input int) {
+	var triangle string
+	
 	for i := range input {
-		var triangle string = "*"
+		triangle = "*"
 		for range i {
 			triangle += "*"
 		}
