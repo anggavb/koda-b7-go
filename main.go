@@ -9,6 +9,7 @@ import (
 	"github.com/anggavb/koda-b7-go/internals/circle"
 	"github.com/anggavb/koda-b7-go/internals/data"
 	"github.com/anggavb/koda-b7-go/internals/models"
+	"github.com/anggavb/koda-b7-go/internals/readfile"
 	"github.com/anggavb/koda-b7-go/internals/triangle"
 )
 
@@ -21,6 +22,7 @@ func main() {
 		fmt.Println("2. Generate Right-Angled Triangle")
 		fmt.Println("3. Inserting New Number to Slice")
 		fmt.Println("4. Show My Biodata")
+		fmt.Println("5. Read File Content")
 		fmt.Println("0. Exit")
 
 		if !scanner.Scan() {
@@ -65,6 +67,24 @@ func main() {
 
 		case "4":
 			myBiodata()
+
+		case "5":
+			fmt.Print("Insert the filename to read: ") // dir/file.txt
+			if !scanner.Scan() {
+				break
+			}
+			defer func() {
+				if r := recover(); r != nil {
+					fmt.Println("Recovered from panic:", r)
+				}
+			}()
+			filename := strings.TrimSpace(scanner.Text())
+			content, err := readfile.ReadFile(filename)
+			if err != nil {
+				panic(err.Error())
+			}
+			fmt.Println("File Content:")
+			fmt.Println(content)
 
 		default:
 			fmt.Println("Thanks 👋")
