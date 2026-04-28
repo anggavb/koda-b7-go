@@ -23,6 +23,7 @@ func main() {
 		fmt.Println("3. Inserting New Number to Slice")
 		fmt.Println("4. Show My Biodata")
 		fmt.Println("5. Read File Content")
+		fmt.Println("6. Input Person")
 		fmt.Println("0. Exit")
 
 		if !scanner.Scan() {
@@ -85,6 +86,33 @@ func main() {
 			}
 			fmt.Println("File Content:")
 			fmt.Println(content)
+
+		case "6":
+			fmt.Print("Insert person name: ")
+			if !scanner.Scan() {
+				break
+			}
+			name := strings.TrimSpace(scanner.Text())
+			
+			fmt.Print("Insert person address: ")
+			if !scanner.Scan() {
+				break
+			}
+			address := strings.TrimSpace(scanner.Text())
+			
+			fmt.Print("Insert person phone: ")
+			if !scanner.Scan() {
+				break
+			}
+			phone := strings.TrimSpace(scanner.Text())
+
+			person := models.NewPerson(name, address, phone)
+			fmt.Println("Data Person Berhasil Dibuat!")
+
+			fmt.Println(person.Print())
+			fmt.Println(person.Greet())
+			person.SetNamePerson("upin")
+			fmt.Println(person.Greet())
 
 		default:
 			fmt.Println("Thanks 👋")
