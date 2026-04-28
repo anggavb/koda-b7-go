@@ -147,6 +147,10 @@ func main() {
 			case "online":
 				online := models.Online{Name: "Gopay"}
 				total, paymentMethod, err = checkout.Checkout(online, payments)
+
+			default:
+			fmt.Println("Invalid payment method")
+			continue
 			}
 
 			if err != nil {
@@ -154,6 +158,8 @@ func main() {
 			} else {
 				fmt.Printf("Total: %d, Payment Method: %s\n", total, paymentMethod)
 			}
+
+			fmt.Printf("List Payments: %v", payments)
 
 		default:
 			fmt.Println("Thanks 👋")
