@@ -6,6 +6,7 @@ import (
 	"os"
 	"strings"
 
+	"github.com/anggavb/koda-b7-go/internals/checkout"
 	"github.com/anggavb/koda-b7-go/internals/circle"
 	"github.com/anggavb/koda-b7-go/internals/data"
 	"github.com/anggavb/koda-b7-go/internals/models"
@@ -24,6 +25,7 @@ func main() {
 		fmt.Println("4. Show My Biodata")
 		fmt.Println("5. Read File Content")
 		fmt.Println("6. Input Person")
+		fmt.Println("7. Checkout Payment")
 		fmt.Println("0. Exit")
 
 		if !scanner.Scan() {
@@ -113,6 +115,45 @@ func main() {
 			fmt.Println(person.Greet())
 			person.SetNamePerson("upin")
 			fmt.Println(person.Greet())
+
+		case "7":
+			fmt.Print("Insert payment method (bank/online): ")
+			if !scanner.Scan() {
+				break
+			}
+			method := strings.TrimSpace(scanner.Text())
+
+			fmt.Print("Insert payments (comma separated): ")
+			if !scanner.Scan() {
+				break
+			}
+			paymentsInput := strings.TrimSpace(scanner.Text())
+			paymentsStr := strings.Split(paymentsInput, ",")
+			var payments []int
+			for _, p := range paymentsStr {
+				var pay int
+				fmt.Sscanf(strings.TrimSpace(p), "%d", &pay)
+				payments = append(payments, pay)
+			}
+
+			var total int
+			var paymentMethod string
+			var err error
+
+			switch method {
+			case "bank":
+				bank := models.Bank{Name: "BCA"}
+				total, paymentMethod, err = checkout.Checkout(bank, payments)
+			case "online":
+				online := models.Online{Name: "Gopay"}
+				total, paymentMethod, err = checkout.Checkout(online, payments)
+			}
+
+			if err != nil {
+				fmt.Println("Error:", err)
+			} else {
+				fmt.Printf("Total: %d, Payment Method: %s\n", total, paymentMethod)
+			}
 
 		default:
 			fmt.Println("Thanks 👋")
