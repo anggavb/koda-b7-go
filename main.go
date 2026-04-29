@@ -5,9 +5,11 @@ import (
 	"fmt"
 	"os"
 	"strings"
+	"sync"
 
 	"github.com/anggavb/koda-b7-go/internals/checkout"
 	"github.com/anggavb/koda-b7-go/internals/circle"
+	"github.com/anggavb/koda-b7-go/internals/coffeeshop"
 	"github.com/anggavb/koda-b7-go/internals/data"
 	"github.com/anggavb/koda-b7-go/internals/models"
 	"github.com/anggavb/koda-b7-go/internals/readfile"
@@ -26,6 +28,7 @@ func main() {
 		fmt.Println("5. Read File Content")
 		fmt.Println("6. Input Person")
 		fmt.Println("7. Checkout Payment")
+		fmt.Println("8. Simulate Barista Worker")
 		fmt.Println("0. Exit")
 
 		if !scanner.Scan() {
@@ -160,6 +163,21 @@ func main() {
 			}
 
 			fmt.Printf("List Payments: %v", payments)
+
+		case "8":
+			var wg sync.WaitGroup
+
+			orders := []string{"Kue Ape", "Donat", "Kopi Nako"}
+
+			for id, order := range orders {
+				wg.Go(func ()  {
+					coffeeshop.Barista(id, order)
+				})
+			}
+
+
+			wg.Wait()
+			fmt.Println("\nSemua Pesanan Telah Selesai")
 
 		default:
 			fmt.Println("Thanks 👋")
