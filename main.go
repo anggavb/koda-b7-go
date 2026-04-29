@@ -11,6 +11,7 @@ import (
 	"github.com/anggavb/koda-b7-go/internals/circle"
 	"github.com/anggavb/koda-b7-go/internals/coffeeshop"
 	"github.com/anggavb/koda-b7-go/internals/data"
+	"github.com/anggavb/koda-b7-go/internals/madding"
 	"github.com/anggavb/koda-b7-go/internals/models"
 	"github.com/anggavb/koda-b7-go/internals/readfile"
 	"github.com/anggavb/koda-b7-go/internals/triangle"
@@ -31,6 +32,7 @@ func main() {
 		fmt.Println("7. Checkout Payment")
 		fmt.Println("8. Simulate Barista Worker")
 		fmt.Println("9. Simulate Workaholic Routine")
+		fmt.Println("10. Notice Board")
 		
 		fmt.Println("0. Exit")
 
@@ -202,6 +204,19 @@ func main() {
 			wg.Wait()
 			fmt.Println("Berangkat kerja.")
 
+		case "10":
+			var wg sync.WaitGroup
+			msgChan := make(chan string)
+			var name string
+
+			wg.Go(func () {
+				madding.Sender(msgChan, &name)
+			})
+			
+			madding.Board(name, <-msgChan)
+
+			close(msgChan)
+			wg.Wait()
 		default:
 			fmt.Println("Thanks 👋")
 			return
