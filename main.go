@@ -14,6 +14,7 @@ import (
 	"github.com/anggavb/koda-b7-go/internals/models"
 	"github.com/anggavb/koda-b7-go/internals/readfile"
 	"github.com/anggavb/koda-b7-go/internals/triangle"
+	"github.com/anggavb/koda-b7-go/internals/workaholic"
 )
 
 func main() {
@@ -29,6 +30,8 @@ func main() {
 		fmt.Println("6. Input Person")
 		fmt.Println("7. Checkout Payment")
 		fmt.Println("8. Simulate Barista Worker")
+		fmt.Println("9. Simulate Workaholic Routine")
+		
 		fmt.Println("0. Exit")
 
 		if !scanner.Scan() {
@@ -178,6 +181,26 @@ func main() {
 
 			wg.Wait()
 			fmt.Println("\nSemua Pesanan Telah Selesai")
+
+		case "9":
+			var wg sync.WaitGroup
+
+			workaholic.WakeUp()
+			
+			wg.Go(workaholic.MakeTheBed)
+			wg.Go(workaholic.GetOutBed)
+			wg.Go(func () {
+				workaholic.BoilWater()
+				workaholic.PrepLunch()
+				workaholic.MakeCoffee()
+			})
+			wg.Go(workaholic.Exercise)
+			wg.Go(workaholic.Rest)
+			wg.Go(workaholic.TakeBath)
+			wg.Go(workaholic.WearingClothes)
+
+			wg.Wait()
+			fmt.Println("Berangkat kerja.")
 
 		default:
 			fmt.Println("Thanks 👋")
