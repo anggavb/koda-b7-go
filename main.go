@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"strconv"
 	"strings"
 	"sync"
 
@@ -13,6 +14,7 @@ import (
 	"github.com/anggavb/koda-b7-go/internals/data"
 	"github.com/anggavb/koda-b7-go/internals/madding"
 	"github.com/anggavb/koda-b7-go/internals/models"
+	"github.com/anggavb/koda-b7-go/internals/pipeline"
 	"github.com/anggavb/koda-b7-go/internals/readfile"
 	"github.com/anggavb/koda-b7-go/internals/triangle"
 	"github.com/anggavb/koda-b7-go/internals/workaholic"
@@ -33,6 +35,7 @@ func main() {
 		fmt.Println("8. Simulate Barista Worker")
 		fmt.Println("9. Simulate Workaholic Routine")
 		fmt.Println("10. Notice Board")
+		fmt.Println("11. Pipeline Data")
 		
 		fmt.Println("0. Exit")
 
@@ -212,11 +215,46 @@ func main() {
 			wg.Go(func () {
 				madding.Sender(msgChan, &name)
 			})
-			
+
 			madding.Board(name, <-msgChan)
 
 			close(msgChan)
 			wg.Wait()
+
+		case "11":
+			var wg sync.WaitGroup
+			num := make(chan int)
+			evenNum := make(chan int)
+			squaredNum := make(chan int)
+			// squared := make(chan int)
+
+			scanner := bufio.NewScanner(os.Stdin)
+			fmt.Print("Masukkan angka: ")
+			scanner.Scan()
+			
+			n, _ := strconv.Atoi(strings.TrimSpace(scanner.Text()))
+			
+			wg.Go(func () {
+				pipeline.GenerateNumber(n, num)
+			})
+
+			wg.Go(func() {
+				pipeline.EvenNumberFilter(num, evenNum)
+			})
+
+			wg.Go(func () {
+				pipeline.SquaringValue(evenNum, squaredNum)
+			})
+			
+			var data []int
+			for result := range squaredNum {
+				data = append(data, result)
+			}
+			
+			wg.Wait()
+
+			fmt.Println(data)
+
 		default:
 			fmt.Println("Thanks 👋")
 			return
